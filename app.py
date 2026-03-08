@@ -2,9 +2,10 @@ from fastapi import FastAPI
 import psycopg2
 from pgvector.psycopg2 import register_vector
 from sentence_transformers import SentenceTransformer
-import anthropic
 from openai import OpenAI
 import os
+import json
+from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -12,10 +13,6 @@ load_dotenv()
 app = FastAPI()
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
-
-# client = anthropic.Anthropic(
-#     api_key=os.getenv("ANTHROPIC_API_KEY")
-# )
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -28,6 +25,116 @@ conn = psycopg2.connect(
 )
 
 register_vector(conn)
+
+
+# --- Agent Tools ---
+
+def get_current_time():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def search_documents(query: str) -> str:
+    embedding = model.encode(query)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT filename, chunk_index, content
+        FROM documents
+        ORDER BY embedding <-> %s::vector
+        LIMIT 7
+    """, (embedding.tolist(),))
+    results = cursor.fetchall()
+
+    if not results:
+        return "No relevant documents found."
+
+    parts = []
+    for filename, chunk_index, content in results:
+        parts.append(f"[Source: {filename} | Chunk: {chunk_index}]\n{content}")
+
+    return "\n\n".join(parts)
+
+
+TOOLS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_current_time",
+            "description": "Returns the current system time.",
+            "parameters": {"type": "object", "properties": {}, "required": []}
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_documents",
+            "description": "Searches the document knowledge base and returns relevant chunks for a given query.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "The search query to look up in the documents."
+                    }
+                },
+                "required": ["query"]
+            }
+        }
+    }
+]
+
+
+TOOL_REGISTRY = {
+    "get_current_time": lambda _: get_current_time(),
+    "search_documents": lambda args: search_documents(args["query"]),
+}
+
+
+def run_agent(question: str) -> dict:
+    messages = [{"role": "user", "content": question}]
+    tool_calls_log = []
+
+    # Round 1: LLM decides whether to call a tool
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        tools=TOOLS,
+        messages=messages
+    )
+
+    msg = response.choices[0].message
+
+    # If the model wants to use a tool
+    if msg.tool_calls:
+        messages.append(msg)  # add assistant message with tool_calls
+
+        for tc in msg.tool_calls:
+            tool_name = tc.function.name
+            tool_input = json.loads(tc.function.arguments)
+            tool_result = TOOL_REGISTRY[tool_name](tool_input)
+
+            print(f"[Agent] Tool called: {tool_name} | Input: {tool_input}")
+            tool_calls_log.append({"tool": tool_name, "input": tool_input})
+
+            messages.append({
+                "role": "tool",
+                "tool_call_id": tc.id,
+                "content": tool_result
+            })
+
+        # Round 2: send tool results back for final answer
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            tools=TOOLS,
+            messages=messages
+        )
+        msg = response.choices[0].message
+
+    return {"answer": msg.content, "tools_used": tool_calls_log}
+
+
+@app.get("/agent")
+def agent(question: str):
+    return run_agent(question)
+
 
 @app.get("/ask")
 

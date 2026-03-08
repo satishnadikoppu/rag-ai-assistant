@@ -1,6 +1,5 @@
 fastapi
 uvicorn
-anthropic
 openai
 pgvector
 psycopg2-binary
