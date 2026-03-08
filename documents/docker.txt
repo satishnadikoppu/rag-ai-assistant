@@ -1,0 +1,98 @@
+Docker is a platform for building, shipping, and running containerized applications.
+It allows developers to package software with all its dependencies.
+This ensures applications run consistently across environments.
+Docker introduced the modern container revolution in the software industry.
+It provides lightweight, isolated environments called containers.
+Containers share the host OS kernel for efficiency.
+They start faster and use fewer resources than virtual machines.
+Docker images define what goes inside a container.
+Images are built using simple, declarative Dockerfiles.
+Each image consists of layered filesystem components.
+Layers make images efficient to build and distribute.
+Docker Hub is the default registry for storing images.
+Organizations can also use private registries for security.
+Docker Engine is the core runtime that manages containers.
+It provides APIs for building and running container workloads.
+Docker CLI offers a simple command-line interface for developers.
+Commands like build, run, and push are widely used.
+Docker Compose helps define multi-container applications.
+It uses YAML files to describe services and networks.
+Compose simplifies local development and testing workflows.
+Docker supports volume mounts for persistent storage.
+Volumes allow data to survive container restarts.
+Docker networks enable communication between containers.
+Bridge networks are common for local development.
+Overlay networks support multi-host communication.
+Docker Swarm provides native container orchestration.
+It manages clusters of Docker nodes.
+Swarm supports scaling and rolling updates.
+However, Kubernetes has become the dominant orchestrator.
+Docker remains essential for building container images.
+It integrates with CI/CD pipelines across the industry.
+Developers use Docker to standardize development environments.
+It eliminates “works on my machine” issues.
+Docker Desktop provides a GUI for managing containers.
+It includes Kubernetes support for local testing.
+Docker is widely used in microservices architectures.
+It enables modular, independently deployable services.
+Containers improve portability across clouds and platforms.
+They also enhance resource utilization and efficiency.
+Security best practices include minimizing image size.
+Using trusted base images reduces vulnerabilities.
+Scanning tools help detect security issues in images.
+Docker has a large and active open-source community.
+Its ecosystem includes Compose, BuildKit, and extensions.
+Docker continues to evolve with new developer tools.
+It remains foundational to modern DevOps workflows.
+Docker transformed how teams build and ship software.
+It continues to shape cloud-native development practices.
+Docker revolutionized how applications are packaged.
+It provides consistent environments across machines.
+Docker images are built from layered filesystems.
+Each layer is cached for faster rebuilds.
+The Docker daemon manages container operations.
+Docker CLI communicates with the daemon.
+Docker registries store and distribute images.
+Image tags identify specific versions.
+Docker supports multi‑architecture images.
+Manifest lists group architecture variants.
+Docker supports build arguments for customization.
+Environment variables configure runtime behavior.
+Docker supports secrets for sensitive data.
+Secrets are mounted in memory, not on disk.
+Docker supports user namespaces for isolation.
+User remapping enhances container security.
+Docker supports seccomp profiles.
+Seccomp restricts system calls available to containers.
+Docker supports AppArmor and SELinux policies.
+These policies enforce mandatory access controls.
+Docker supports container health monitoring.
+Health checks integrate with orchestration systems.
+Docker supports restart policies.
+Restart policies improve container resilience.
+Docker supports logging drivers.
+Drivers route logs to external systems.
+Docker supports build caching strategies.
+BuildKit improves build performance.
+BuildKit supports parallel build steps.
+BuildKit supports advanced caching mechanisms.
+Docker supports exporting images as tar archives.
+Images can be imported on offline systems.
+Docker supports container resource reservations.
+Reservations ensure predictable performance.
+Docker supports overlay storage drivers.
+Overlay2 is the default on many systems.
+Docker supports tmpfs mounts.
+Tmpfs stores data in memory for speed.
+Docker supports IPv6 networking.
+Dual‑stack networks support both protocols.
+Docker supports swarm secrets and configs.
+Swarm mode provides built‑in orchestration.
+Docker supports rolling service updates.
+Rollback features restore previous versions.
+Docker supports service constraints.
+Constraints control where services run.
+Docker supports encrypted overlay networks.
+Encryption secures inter‑node communication.
+Docker remains essential for containerized workflows.
+Its ecosystem continues to evolve and expand.

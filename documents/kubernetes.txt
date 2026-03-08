@@ -1,0 +1,97 @@
+Kubernetes is an open‑source platform for orchestrating containerized applications.
+It automates deployment, scaling, and management of workloads.
+It was originally developed at Google based on their internal system Borg.
+It is now maintained by the Cloud Native Computing Foundation.
+Kubernetes has become the industry standard for cloud‑native infrastructure.
+A Kubernetes cluster consists of a control plane and worker nodes.
+The control plane manages the overall state of the cluster.
+Worker nodes run the actual application workloads.
+Containers in Kubernetes run inside units called pods.
+A pod is the smallest deployable object in the system.
+Pods can contain one or multiple tightly coupled containers.
+Kubernetes uses a declarative model to define desired state.
+Users specify how applications should run, and Kubernetes enforces it.
+The API server is the central communication hub of the cluster.
+The scheduler assigns pods to nodes based on resource needs.
+The controller manager ensures the cluster matches the desired state.
+Kubelet runs on each node to manage pods and containers.
+Kube‑proxy handles networking and service routing.
+Kubernetes supports automatic scaling of applications.
+It can scale based on CPU, memory, or custom metrics.
+It also provides self‑healing capabilities for workloads.
+If a pod crashes, Kubernetes automatically replaces it.
+If a node fails, workloads are rescheduled elsewhere.
+Kubernetes supports rolling updates for zero‑downtime deployments.
+It can also roll back changes if something goes wrong.
+Services in Kubernetes provide stable networking endpoints.
+Ingress resources manage external access to applications.
+ConfigMaps store non‑secret configuration data.
+Secrets store sensitive information like passwords or tokens.
+PersistentVolumes enable durable storage for stateful apps.
+StatefulSets manage ordered, persistent workloads.
+DaemonSets ensure a pod runs on every node.
+Jobs and CronJobs handle batch and scheduled tasks.
+Kubernetes is highly extensible through custom resources.
+Operators automate complex application lifecycle tasks.
+The ecosystem includes tools like Helm, ArgoCD, and Prometheus.
+Kubernetes works across cloud providers and on‑prem environments.
+It enables hybrid and multi‑cloud deployment strategies.
+It is widely used in microservices architectures.
+It also supports AI, ML, and data‑processing workloads.
+Organizations adopt Kubernetes to reduce operational toil.
+It improves reliability, scalability, and deployment speed.
+It encourages modern DevOps and GitOps practices.
+Kubernetes abstracts infrastructure complexity from developers.
+It allows teams to focus on building applications, not servers.
+Its community continues to evolve the platform rapidly.
+Kubernetes remains a foundational technology for cloud‑native systems.
+It is expected to shape infrastructure strategies for years to come.
+Kubernetes abstracts infrastructure into a unified API.
+It ensures applications run reliably across environments.
+Clusters can span multiple availability zones.
+Control plane components maintain global cluster state.
+Admission controllers validate or mutate incoming requests.
+Pod lifecycle events are tracked continuously.
+Init containers run setup tasks before main containers.
+Sidecar containers extend pod functionality.
+Pod disruption budgets protect application availability.
+Readiness probes signal when a pod can receive traffic.
+Liveness probes detect unhealthy containers.
+Startup probes help slow‑starting applications.
+Kubernetes supports multiple container runtimes.
+Containerd and CRI‑O are common runtime choices.
+Network policies control traffic flow between pods.
+CNI plugins implement cluster networking.
+Calico provides policy‑driven networking.
+Flannel offers simple overlay networking.
+Kubernetes supports service mesh integrations.
+Istio adds advanced traffic management.
+Linkerd provides lightweight service mesh features.
+Kubernetes events help diagnose cluster issues.
+Resource quotas limit namespace consumption.
+LimitRanges enforce container resource boundaries.
+Affinity rules influence pod placement.
+Taints and tolerations control scheduling behavior.
+Node selectors provide simple placement rules.
+Kubernetes supports secrets encryption at rest.
+Audit logs track API interactions.
+RBAC controls user and service permissions.
+ServiceAccounts authenticate workloads.
+Kubernetes supports custom admission webhooks.
+Dynamic admission enables policy enforcement.
+Kubernetes supports multi‑tenancy patterns.
+Cluster federation enables multi‑cluster management.
+Kubernetes supports ephemeral containers for debugging.
+Ephemeral containers run inside existing pods.
+Kubernetes supports runtime class selection.
+Runtime classes define container runtime behavior.
+Kubernetes supports topology‑aware scheduling.
+It optimizes pod placement based on locality.
+Kubernetes supports graceful pod termination.
+Finalizers ensure cleanup before deletion.
+Kubernetes supports immutable ConfigMaps.
+Immutable configs reduce accidental changes.
+Kubernetes supports server‑side apply.
+It improves declarative configuration workflows.
+Kubernetes continues to expand enterprise capabilities.
+It remains the backbone of cloud‑native infrastructure.
