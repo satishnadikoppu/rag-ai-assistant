@@ -49,7 +49,7 @@ USING hnsw (embedding vector_cosine_ops);
 
 cursor.execute("DELETE FROM documents;")
 
-folder = "documents"
+folder = "data/documents"
 
 for file in os.listdir(folder):
 

@@ -4,10 +4,35 @@ A Retrieval-Augmented Generation (RAG) system that answers questions grounded in
 
 ## Architecture
 
+The system follows a Retrieval-Augmented Generation (RAG) pipeline:
+
 ```
-documents/ → ingest.py → pgvector (PostgreSQL)
-                                 ↓
-                     app.py (FastAPI) → LLM → answer + sources
+User Question
+      │
+      ▼
+FastAPI Endpoint (/ask)
+      │
+      ▼
+Sentence-Transformers
+(Question Embedding)
+      │
+      ▼
+PostgreSQL + pgvector
+(Vector Similarity Search)
+      │
+      ▼
+Top-K Relevant Chunks
+(Retrieved from documents)
+      │
+      ▼
+Grounded Prompt
+(Context + Question)
+      │
+      ▼
+LLM (OpenAI / Claude)
+      │
+      ▼
+Answer + Source Citations
 ```
 
 ## Features
@@ -116,3 +141,17 @@ rag-ai-assistant/
 | Top-k retrieval | `app.py` `LIMIT` | 7 |
 | Embedding model | both files | `all-MiniLM-L6-v2` |
 | LLM | `app.py` | `gpt-4o-mini` |
+
+## Demo
+
+Example query:
+
+http://localhost:8000/ask?question=How%20do%20Docker%20and%20Kubernetes%20work%20together?
+
+Example response:
+
+Docker is a platform for packaging applications into containers, while Kubernetes orchestrates and manages those containers at scale. Together, they enable developers to build containerized applications and run them reliably across distributed environments.
+
+Sources:
+- docker.txt (chunk 1)
+- kubernetes.txt (chunk 0)
