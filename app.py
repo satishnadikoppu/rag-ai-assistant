@@ -104,29 +104,40 @@ def run_agent(question: str) -> dict:
 
     # If the model wants to use a tool
     if msg.tool_calls:
-        messages.append(msg)  # add assistant message with tool_calls
+        while True:
 
-        for tc in msg.tool_calls:
-            tool_name = tc.function.name
-            tool_input = json.loads(tc.function.arguments)
-            tool_result = TOOL_REGISTRY[tool_name](tool_input)
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                tools=TOOLS,
+                messages=messages
+            )
 
-            print(f"[Agent] Tool called: {tool_name} | Input: {tool_input}")
-            tool_calls_log.append({"tool": tool_name, "input": tool_input})
+            msg = response.choices[0].message
 
-            messages.append({
-                "role": "tool",
-                "tool_call_id": tc.id,
-                "content": tool_result
-            })
+            # If no tool calls → we are done
+            if not msg.tool_calls:
+                return {"answer": msg.content, "tools_used": tool_calls_log}
 
-        # Round 2: send tool results back for final answer
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            tools=TOOLS,
-            messages=messages
-        )
-        msg = response.choices[0].message
+            messages.append(msg)
+
+            for tc in msg.tool_calls:
+                tool_name = tc.function.name
+                tool_input = json.loads(tc.function.arguments)
+
+                print(f"[Agent] Tool called: {tool_name} | Input: {tool_input}")
+
+                tool_calls_log.append({
+                    "tool": tool_name,
+                    "input": tool_input
+                })
+
+                tool_result = TOOL_REGISTRY[tool_name](tool_input)
+
+                messages.append({
+                    "role": "tool",
+                    "tool_call_id": tc.id,
+                    "content": tool_result
+                })
 
     return {"answer": msg.content, "tools_used": tool_calls_log}
 
