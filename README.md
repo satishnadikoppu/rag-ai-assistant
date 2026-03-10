@@ -10,30 +10,36 @@ The system follows a Retrieval-Augmented Generation (RAG) pipeline:
 User Question
       │
       ▼
-FastAPI Endpoint (/ask)
+FastAPI API Layer
       │
       ▼
-Sentence-Transformers
-(Question Embedding)
+Agent Controller
+(LLM + Tool Selection)
+      │
+      ├───────────────┐
+      │               │
+      ▼               ▼
+search_documents()   get_current_time()
+      │
+      ▼
+Sentence Transformer
+(Query Embedding)
       │
       ▼
 PostgreSQL + pgvector
 (Vector Similarity Search)
       │
       ▼
-Top-K Relevant Chunks
-(Retrieved from documents)
+Relevant Document Chunks
       │
       ▼
-Grounded Prompt
-(Context + Question)
-      │
-      ▼
-LLM (OpenAI / Claude)
+LLM Reasoning
+(Final Answer Generation)
       │
       ▼
 Answer + Source Citations
 ```
+The agent layer decides whether to call tools such as document retrieval or system utilities before generating the final response.
 
 ## Features
 
