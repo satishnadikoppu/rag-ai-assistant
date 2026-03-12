@@ -6,19 +6,6 @@ A Retrieval-Augmented Generation (RAG) system that answers questions grounded in
 
 The system follows a Retrieval-Augmented Generation (RAG) pipeline:
 
-```mermaid
-flowchart TD
-    A([User Question]) --> B[FastAPI API Layer]
-    B --> C[Agent Controller\nLLM + Tool Selection]
-    C -->|tool call| D[search_documents]
-    C -->|tool call| E[get_current_time]
-    D --> F[Sentence Transformer\nQuery Embedding]
-    F --> G[(PostgreSQL + pgvector\nVector Similarity Search)]
-    G --> H[Relevant Document Chunks]
-    H --> I[LLM Reasoning\nFinal Answer Generation]
-    I --> J([Answer + Source Citations])
-```
-
 ```
 User Question
       │
