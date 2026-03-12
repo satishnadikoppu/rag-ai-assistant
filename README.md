@@ -7,16 +7,50 @@ A Retrieval-Augmented Generation (RAG) system that answers questions grounded in
 The system follows a Retrieval-Augmented Generation (RAG) pipeline:
 
 ```mermaid
-flowchart LR
+flowchart TD
     A([User Question]) --> B[FastAPI API Layer]
     B --> C[Agent Controller\nLLM + Tool Selection]
-    C --> D[search_documents]
-    C --> E[get_current_time]
+    C -->|tool call| D[search_documents]
+    C -->|tool call| E[get_current_time]
     D --> F[Sentence Transformer\nQuery Embedding]
     F --> G[(PostgreSQL + pgvector\nVector Similarity Search)]
     G --> H[Relevant Document Chunks]
-    H --> I[LLM Reasoning]
+    H --> I[LLM Reasoning\nFinal Answer Generation]
     I --> J([Answer + Source Citations])
+```
+
+```
+User Question
+      │
+      ▼
+FastAPI API Layer
+      │
+      ▼
+Agent Controller
+(LLM + Tool Selection)
+      │
+      ├───────────────┐
+      │               │
+      ▼               ▼
+search_documents()   get_current_time()
+      │
+      ▼
+Sentence Transformer
+(Query Embedding)
+      │
+      ▼
+PostgreSQL + pgvector
+(Vector Similarity Search)
+      │
+      ▼
+Relevant Document Chunks
+      │
+      ▼
+LLM Reasoning
+(Final Answer Generation)
+      │
+      ▼
+Answer + Source Citations
 ```
 
 The agent layer decides whether to call tools such as document retrieval or system utilities before generating the final response.
